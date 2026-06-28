@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -7,14 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Buena Compra - Sistema de Inventarios</title>
 
+    <!-- ========== LIBRERÍAS EXTERNAS ========== -->
+    <!-- Bootstrap 5 para estilos y componentes responsivos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 para íconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Google Fonts (Poppins) para tipografía moderna -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SheetJS (XLSX) para generar reportes en Excel desde el navegador -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-      <style>
+    <style>
+        /* ========== VARIABLES CSS (paleta de colores) ========== */
         :root {
-            /* Colores principales actualizados y ampliados */
             --principal: #d63384;
             --principal-claro: #f172a7;
             --secundario: #6610f2;
@@ -36,22 +40,23 @@
             --blanco: #ffffff;
         }
 
+        /* ========== RESET Y ESTILOS GLOBALES ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            outline: none !important;
+            outline: none !important; /* Elimina el contorno azul en focos */
         }
 
         html, body {
             overflow-x: hidden;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #fef6ff, #f0f4ff);
+            background: linear-gradient(135deg, #fef6ff, #f0f4ff); /* Fondo suave degradado */
         }
 
-        /* LOGIN */
+        /* ========== PANTALLA DE LOGIN ========== */
         .login-page {
-            height: 100vh;
+            height: 100vh; /* Ocupa toda la altura de la ventana */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -60,8 +65,8 @@
 
         .login-box {
             width: 400px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.15); /* Fondo semitransparente */
+            backdrop-filter: blur(15px); /* Efecto cristal (glassmorphism) */
             padding: 40px;
             border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.25);
@@ -76,6 +81,7 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
+        /* ========== ESTILOS DE FORMULARIOS ========== */
         .form-control, .form-select {
             border-radius: 14px;
             padding: 12px 15px;
@@ -88,6 +94,7 @@
             box-shadow: 0 0 0 0.25rem rgba(214, 51, 132, 0.25);
         }
 
+        /* ========== BOTÓN DE LOGIN ========== */
         .btn-login {
             width: 100%;
             border: none;
@@ -107,11 +114,12 @@
             color: white;
         }
 
-        /* SISTEMA */
+        /* ========== CONTENEDOR PRINCIPAL DEL SISTEMA (oculto hasta login) ========== */
         #sistema {
             display: none;
         }
 
+        /* ========== BARRA DE NAVEGACIÓN ========== */
         .navbar {
             background: linear-gradient(90deg, var(--oscuro), var(--secundario));
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -123,7 +131,7 @@
             color: var(--blanco) !important;
         }
 
-        /* MENU */
+        /* ========== MENÚ DE PESTAÑAS (TABS) ========== */
         .nav-pills {
             border: none !important;
             box-shadow: none !important;
@@ -157,7 +165,7 @@
             border: 2px solid var(--blanco);
         }
 
-        /* DASHBOARD */
+        /* ========== TARJETAS DEL DASHBOARD ========== */
         .dashboard-card {
             border-radius: 22px;
             color: white;
@@ -171,6 +179,7 @@
             box-shadow: 0px 14px 30px rgba(0, 0, 0, 0.18);
         }
 
+        /* Cada tarjeta tiene un degradado de color diferente */
         .card1 { background: linear-gradient(135deg, var(--principal), var(--principal-claro)); }
         .card2 { background: linear-gradient(135deg, var(--verde), var(--verde-claro)); }
         .card3 { background: linear-gradient(135deg, var(--rojo), var(--rojo-claro)); }
@@ -178,7 +187,7 @@
         .card5 { background: linear-gradient(135deg, var(--amarillo), var(--amarillo-claro)); }
         .card6 { background: linear-gradient(135deg, var(--azul), var(--azul-claro)); }
 
-        /* CAJAS */
+        /* ========== CAJAS DE CONTENIDO ========== */
         .box {
             background: var(--blanco);
             padding: 30px;
@@ -187,7 +196,7 @@
             border: 1px solid var(--gris-claro);
         }
 
-        /* BOTONES */
+        /* ========== BOTONES PERSONALIZADOS ========== */
         .btn-custom {
             border: none;
             border-radius: 14px;
@@ -232,7 +241,7 @@
             color: var(--oscuro);
         }
 
-        /* TABLA */
+        /* ========== TABLA DE PRODUCTOS ========== */
         .table {
             border-radius: 20px;
             overflow: hidden;
@@ -260,6 +269,7 @@
             transform: scale(1.002);
         }
 
+        /* Clases para resaltar filas según estado */
         .stock-bajo {
             background: rgba(220, 53, 69, 0.08) !important;
         }
@@ -272,7 +282,7 @@
             background: rgba(255, 193, 7, 0.15) !important;
         }
 
-        /* IMAGEN PRODUCTO */
+        /* ========== IMAGEN DE PRODUCTO ========== */
         .img-producto {
             width: 60px;
             height: 60px;
@@ -282,14 +292,14 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* ALERTAS */
+        /* ========== ALERTAS ========== */
         .alert {
             border: none;
             border-radius: 16px;
             padding: 15px 20px;
         }
 
-        /* FOOTER */
+        /* ========== FOOTER ========== */
         footer {
             margin-top: 40px;
             background: linear-gradient(90deg, var(--oscuro), var(--secundario));
@@ -299,7 +309,7 @@
             box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
         }
 
-        /* ETIQUETAS DE ESTADO */
+        /* ========== ETIQUETAS (BADGES) ========== */
         .badge {
             padding: 8px 12px;
             border-radius: 8px;
@@ -310,6 +320,9 @@
 
 <body>
 
+    <!-- ============================================================ -->
+    <!-- ==================== PANTALLA DE LOGIN ==================== -->
+    <!-- ============================================================ -->
     <div class="login-page" id="loginPage">
         <div class="login-box">
             <h2>
@@ -329,7 +342,12 @@
         </div>
     </div>
 
+    <!-- ============================================================ -->
+    <!-- ================ SISTEMA PRINCIPAL (oculto) ================ -->
+    <!-- ============================================================ -->
     <div id="sistema">
+
+        <!-- ===== BARRA DE NAVEGACIÓN ===== -->
         <nav class="navbar navbar-dark shadow p-3">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
@@ -342,6 +360,8 @@
         </nav>
 
         <div class="container mt-4">
+
+            <!-- ===== MENÚ DE PESTAÑAS (TABS) ===== -->
             <ul class="nav nav-pills mb-4 justify-content-center" id="menuTabs" role="tablist">
                 <li class="nav-item">
                     <button class="nav-link active" id="tab-dashboard" data-bs-toggle="pill" data-bs-target="#dashboard" type="button">
@@ -370,39 +390,48 @@
                 </li>
             </ul>
 
+            <!-- ===== CONTENIDO DE LAS PESTAÑAS ===== -->
             <div class="tab-content">
+
+                <!-- ========== PANEL DASHBOARD ========== -->
                 <div class="tab-pane fade show active" id="dashboard">
                     <div class="row g-4">
+                        <!-- Tarjeta: Total productos -->
                         <div class="col-md-3">
                             <div class="dashboard-card card1">
                                 <h5><i class="fa-solid fa-box"></i> Casos Evaluados</h5>
                                 <h2 id="totalProductos">0</h2>
                             </div>
                         </div>
+                        <!-- Tarjeta: Valor total del inventario -->
                         <div class="col-md-3">
                             <div class="dashboard-card card2">
                                 <h5><i class="fa-solid fa-money-bill-wave"></i> Costo Inversión</h5>
                                 <h2 id="valorTotal">0 Bs</h2>
                             </div>
                         </div>
+                        <!-- Tarjeta: Productos con stock bajo -->
                         <div class="col-md-3">
                             <div class="dashboard-card card3">
                                 <h5><i class="fa-solid fa-triangle-exclamation"></i> Stock Bajo</h5>
                                 <h2 id="stockBajo">0</h2>
                             </div>
                         </div>
+                        <!-- Tarjeta: Número de categorías -->
                         <div class="col-md-3">
                             <div class="dashboard-card card4">
                                 <h5><i class="fa-solid fa-layer-group"></i> Categorías</h5>
                                 <h2 id="categorias">0</h2>
                             </div>
                         </div>
+                        <!-- Tarjeta: Productos vencidos -->
                         <div class="col-md-3">
                             <div class="dashboard-card card5">
                                 <h5><i class="fa-solid fa-calendar-times"></i> Productos Vencidos</h5>
                                 <h2 id="vencidos">0</h2>
                             </div>
                         </div>
+                        <!-- Tarjeta: Productos por vencer (próximos 15 días) -->
                         <div class="col-md-3">
                             <div class="dashboard-card card6">
                                 <h5><i class="fa-solid fa-clock"></i> Por Vencer</h5>
@@ -412,44 +441,45 @@
                     </div>
                 </div>
 
+                <!-- ========== PESTAÑA REGISTRO DE PRODUCTOS ========== -->
                 <div class="tab-pane fade" id="registro">
                     <div class="box">
                         <h3 class="mb-4">
                             <i class="fa-solid fa-plus text-primary"></i> &nbsp;Registrar Producto mediante Caso de Prueba
                         </h3>
                         <div class="row g-4">
-                           <!-- ID Caso de Prueba Automático -->
-                        <div class="col-md-4">
-                             <label class="form-label">ID Caso de Prueba</label>
+                            <!-- ID del caso de prueba (se genera automáticamente) -->
+                            <div class="col-md-4">
+                                <label class="form-label">ID Caso de Prueba</label>
                                 <input type="text" id="productoId" class="form-control" readonly>
-                                    </div>
-
-                                    <script>
-                                    document.addEventListener("DOMContentLoaded", function () {
-                                     generarIDAutomatico();
-                                        });
-
-                                        function generarIDAutomatico() {
-                                         // Obtener el último número guardado
-                                        let ultimoNumero = localStorage.getItem("ultimoCasoPrueba");
-                                           if (ultimoNumero === null) {
-                                           ultimoNumero = 1;
-                                               } else {
-                                           ultimoNumero = parseInt(ultimoNumero) + 1;
-                                              }
-                                              // Crear ID con formato ABB001, ABB002...
-                                              let nuevoID = "ABB" + String(ultimoNumero).padStart(3, "0");
-                                              // Mostrar ID en el campo
-                                           document.getElementById("productoId").value = nuevoID;
-                                               // Guardar el número para el próximo registro
-                                             localStorage.setItem("ultimoCasoPrueba", ultimoNumero);
-                                            }
-                                    </script>
                             </div>
+                            <!-- Script que genera el ID automático al cargar la página -->
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    generarIDAutomatico();
+                                });
+
+                                function generarIDAutomatico() {
+                                    // Obtiene el último número guardado en localStorage o inicia en 1
+                                    let ultimoNumero = localStorage.getItem("ultimoCasoPrueba");
+                                    if (ultimoNumero === null) {
+                                        ultimoNumero = 1;
+                                    } else {
+                                        ultimoNumero = parseInt(ultimoNumero) + 1;
+                                    }
+                                    // Formato: ABB001, ABB002, ...
+                                    let nuevoID = "ABB" + String(ultimoNumero).padStart(3, "0");
+                                    document.getElementById("productoId").value = nuevoID;
+                                    // Guarda el número actualizado para la próxima vez
+                                    localStorage.setItem("ultimoCasoPrueba", ultimoNumero);
+                                }
+                            </script>
+                            <!-- Campo: Nombre -->
                             <div class="col-md-4">
                                 <label class="form-label">Nombre del Producto</label>
                                 <input type="text" id="nombre" class="form-control" placeholder="Ej: Arroz, Refresco...">
                             </div>
+                            <!-- Campo: Categoría -->
                             <div class="col-md-4">
                                 <label class="form-label">Categoría</label>
                                 <select id="categoria" class="form-select">
@@ -460,14 +490,17 @@
                                     <option>Snacks</option>
                                 </select>
                             </div>
+                            <!-- Campo: Cantidad -->
                             <div class="col-md-4">
                                 <label class="form-label">Cantidad (Stock)</label>
                                 <input type="number" id="cantidad" class="form-control" min="1">
                             </div>
+                            <!-- Campo: Costo unitario -->
                             <div class="col-md-4">
                                 <label class="form-label">Costo (Bs)</label>
                                 <input type="number" id="costo" class="form-control" min="0" step="0.01">
                             </div>
+                            <!-- Campo: Proveedor -->
                             <div class="col-md-4">
                                 <label class="form-label">Proveedor</label>
                                 <select id="Provedor" class="form-select">
@@ -477,16 +510,18 @@
                                     <option>Pil Andino</option>
                                 </select>
                             </div>
+                            <!-- Campo: Fecha de ejecución (registro) -->
                             <div class="col-md-4">
                                 <label class="form-label">Fecha de Ejecución</label>
                                 <input type="date" id="fecha" class="form-control">
                             </div>
-                            <!-- NUEVO CAMPO: FECHA DE VENCIMIENTO -->
+                            <!-- Campo: Fecha de vencimiento (NUEVO) -->
                             <div class="col-md-4">
                                 <label class="form-label">Fecha de Vencimiento</label>
                                 <input type="date" id="fechaVencimiento" class="form-control">
                             </div>
                         </div>
+                        <!-- Botones de acción -->
                         <div class="mt-4 d-flex gap-3">
                             <button class="btn btn-custom btn-primary-custom" onclick="guardarProducto()">
                                 Guardar Producto
@@ -498,12 +533,14 @@
                     </div>
                 </div>
 
+                <!-- ========== PESTAÑA GESTIÓN DE INVENTARIO ========== -->
                 <div class="tab-pane fade" id="inventario">
                     <div class="box">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3>
                                 <i class="fa-solid fa-boxes-stacked text-primary"></i> &nbsp;Gestión Inventario (Muestras de Pruebas)
                             </h3>
+                            <!-- Buscador en tiempo real -->
                             <input type="text" id="buscador" class="form-control w-25" placeholder="Buscar por nombre..." onkeyup="buscarProducto()">
                         </div>
                         <div class="table-responsive">
@@ -529,6 +566,7 @@
                     </div>
                 </div>
 
+                <!-- ========== PESTAÑA ALERTAS INTELIGENTES ========== -->
                 <div class="tab-pane fade" id="alertas">
                     <div class="box">
                         <h3 class="text-danger mb-4">
@@ -538,6 +576,7 @@
                     </div>
                 </div>
 
+                <!-- ========== PESTAÑA CENTRO DE REPORTES ========== -->
                 <div class="tab-pane fade" id="reportes">
                     <div class="box">
                         <h3 class="mb-4 text-success">
@@ -545,6 +584,7 @@
                         </h3>
                         <p class="text-muted">Descarga reportes estructurados reales en formato Excel (.xlsx) con los datos asociados a tus Casos de Prueba.</p>
                         <div class="row g-4">
+                            <!-- Reporte: Inventario completo -->
                             <div class="col-md-4">
                                 <div class="card p-4 shadow border-0 rounded-4 text-center">
                                     <i class="fa-solid fa-box fa-3x text-primary"></i>
@@ -552,6 +592,7 @@
                                     <button class="btn btn-primary mt-2" onclick="descargarReporte('Productos')">Descargar Excel</button>
                                 </div>
                             </div>
+                            <!-- Reporte: Productos críticos -->
                             <div class="col-md-4">
                                 <div class="card p-4 shadow border-0 rounded-4 text-center">
                                     <i class="fa-solid fa-triangle-exclamation fa-3x text-danger"></i>
@@ -559,6 +600,7 @@
                                     <button class="btn btn-danger mt-2" onclick="descargarReporte('Stock Bajo')">Descargar Excel</button>
                                 </div>
                             </div>
+                            <!-- Reporte: Resumen financiero -->
                             <div class="col-md-4">
                                 <div class="card p-4 shadow border-0 rounded-4 text-center">
                                     <i class="fa-solid fa-money-bill-wave fa-3x text-success"></i>
@@ -569,434 +611,544 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
+            </div><!-- .tab-content -->
+        </div><!-- .container -->
+
+        <!-- ===== FOOTER ===== -->
         <footer>
             <i class="fa-solid fa-store"></i> &nbsp;Sistema del Almacen - La Buena Compra © 2026
         </footer>
-    </div>
+    </div><!-- #sistema -->
 
+    <!-- ========== SCRIPTS DE BOOTSTRAP Y SWEETALERT2 ========== -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
+    <!-- ============================================================ -->
+    <!-- ==================== JAVASCRIPT PRINCIPAL ==================== -->
+    <!-- ============================================================ -->
+    <script>
 
-const imagenesReales = {
-    "Abarrotes": "https://source.unsplash.com/300x300/?grocery",
-    "Bebidas": "https://source.unsplash.com/300x300/?soft-drink",
-    "Lácteos": "https://source.unsplash.com/300x300/?milk",
-    "Snacks": "https://source.unsplash.com/300x300/?snacks",
-    "General": "https://source.unsplash.com/300x300/?supermarket"
-};
+        // ========== DICCIONARIO DE IMÁGENES POR CATEGORÍA ==========
+        // Se usan URLs de Unsplash para obtener imágenes reales de muestra.
+        const imagenesReales = {
+            "Abarrotes": "https://source.unsplash.com/300x300/?grocery",
+            "Bebidas": "https://source.unsplash.com/300x300/?soft-drink",
+            "Lácteos": "https://source.unsplash.com/300x300/?milk",
+            "Snacks": "https://source.unsplash.com/300x300/?snacks",
+            "General": "https://source.unsplash.com/300x300/?supermarket"
+        };
 
-// LOGIN
-function iniciarSesion() {
-    let usuario = document.getElementById("usuario").value;
-    let password = document.getElementById("password").value;
+        // ============================================================
+        // ========== FUNCIONES DE LOGIN / LOGOUT ==========
+        // ============================================================
 
-    if (usuario === "stefany" && password === "9087957") {
-        document.getElementById("loginPage").style.display = "none";
-        document.getElementById("sistema").style.display = "block";
-        cargarProductos();
-        Swal.fire({
-            icon: 'success',
-            title: 'Bienvenida',
-            text: 'Inicio de sesión correcto',
-            confirmButtonColor: '#6610f2'
-        });
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Usuario o contraseña incorrectos'
-        });
-    }
-}
+        /**
+         * iniciaSesion - Valida las credenciales y muestra el sistema.
+         * Usuario fijo: stefany / contraseña: 9087957
+         */
+        function iniciarSesion() {
+            let usuario = document.getElementById("usuario").value;
+            let password = document.getElementById("password").value;
 
-function cerrarSesion() {
-    Swal.fire({
-        title: '¿Cerrar sesión?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#dc3545'
-    }).then((result) => {
-        if(result.isConfirmed){
-            location.reload();
+            if (usuario === "stefany" && password === "9087957") {
+                // Oculta login y muestra el sistema
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("sistema").style.display = "block";
+                // Carga los productos desde la base de datos
+                cargarProductos();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bienvenida',
+                    text: 'Inicio de sesión correcto',
+                    confirmButtonColor: '#6610f2'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Usuario o contraseña incorrectos'
+                });
+            }
         }
-    });
-}
 
-// ARRAY PRINCIPAL
-let productos = [];
-
-// FUNCIÓN PARA CALCULAR ESTADO DE VENCIMIENTO
-function obtenerEstadoVencimiento(fechaVenc) {
-    const hoy = new Date();
-    const fechaVencimiento = new Date(fechaVenc);
-    const diferencia = fechaVencimiento - hoy;
-    const diasRestantes = Math.ceil(diferencia / (1000 * 60 * 60 * 24));
-
-    if (diasRestantes < 0) return { estado: "VENCIDO", clase: "vencido", badge: "bg-danger" };
-    if (diasRestantes <= 15) return { estado: "POR VENCER", clase: "por-vencer", badge: "bg-warning text-dark" };
-    return { estado: "VIGENTE", clase: "", badge: "bg-success" };
-}
-
-// CARGAR PRODUCTOS
-function cargarProductos() {
-    fetch("obtener_productos.php?t=" + new Date().getTime())
-    .then(response => response.json())
-    .then(data => {
-        console.log("DATOS RECIBIDOS:", data);
-        productos = data;
-        renderizarTabla(productos);
-        actualizarDashboard();
-        mostrarCriticos();
-    })
-    .catch(error => {
-        console.log("ERROR:", error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudieron cargar los productos'
-        });
-    });
-}
-
-// GUARDAR PRODUCTO
-function guardarProducto() {
-    let codigo = document.getElementById("productoId").value;
-    let nombre = document.getElementById("nombre").value;
-    let categoria = document.getElementById("categoria").value;
-    let cantidad = parseInt(document.getElementById("cantidad").value);
-    let costo = parseFloat(document.getElementById("costo").value);
-    let proveedor = document.getElementById("Provedor").value;
-    let fecha = document.getElementById("fecha").value;
-    let fechaVencimiento = document.getElementById("fechaVencimiento").value;
-
-    if (
-        nombre === "" ||
-        categoria === "" ||
-        isNaN(cantidad) ||
-        isNaN(costo) ||
-        fechaVencimiento === ""
-    ) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Campos incompletos',
-            text: 'Complete todos los campos, incluyendo fecha de vencimiento'
-        });
-        return;
-    }
-
-    let total = cantidad * costo;
-    let imagen = imagenesReales[categoria] || imagenesReales["General"];
-
-    let producto = {
-        codigo: codigo,
-        nombre: nombre,
-        categoria: categoria,
-        cantidad: cantidad,
-        costo: costo,
-        total: total,
-        proveedor: proveedor,
-        fecha: fecha,
-        fechaVencimiento: fechaVencimiento,
-        imagen: imagen
-    };
-
-    fetch("guardar_producto.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(producto)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("RESPUESTA:", data);
-        if(data.success){
+        /**
+         * cerrarSesion - Pregunta al usuario y recarga la página para volver al login.
+         */
+        function cerrarSesion() {
             Swal.fire({
-                icon: 'success',
-                title: 'Producto Guardado',
-                html: `
-                    <b>${nombre}</b><br>
-                    Categoría: ${categoria}<br>
-                    Cantidad: ${cantidad}<br>
-                    Vence: ${fechaVencimiento}<br>
-                    Total: ${total} Bs
-                `,
-                confirmButtonColor: '#6610f2'
-            });
-            cargarProductos();
-            limpiarCampos();
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: data.error
+                title: '¿Cerrar sesión?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#dc3545'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload(); // Recarga la página, volviendo al login
+                }
             });
         }
-    })
-    .catch(error => {
-        console.log(error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo guardar el producto'
-        });
-    });
-}
 
-// TABLA
-function renderizarTabla(lista = productos) {
-    let tabla = document.getElementById("tablaProductos");
-    tabla.innerHTML = "";
+        // ============================================================
+        // ========== VARIABLE GLOBAL Y FUNCIONES DE ESTADO ==========
+        // ============================================================
 
-    if(lista.length === 0){
-        tabla.innerHTML = `
-            <tr>
-                <td colspan="11" class="text-center text-muted p-4">
-                    No existen productos registrados
-                </td>
-            </tr>
-        `;
-        return;
-    }
+        // Arreglo que contendrá todos los productos (se llena desde el backend)
+        let productos = [];
 
-    lista.forEach((producto) => {
-        const estadoStock = producto.cantidad < 5
-            ? `<span class="badge bg-danger">STOCK BAJO</span>`
-            : `<span class="badge bg-success">DISPONIBLE</span>`;
+        /**
+         * obtenerEstadoVencimiento - Calcula si un producto está vigente,
+         * por vencer (≤15 días) o vencido, a partir de su fecha de vencimiento.
+         * @param {string} fechaVenc - Fecha en formato YYYY-MM-DD
+         * @returns {object} { estado, clase, badge }
+         */
+        function obtenerEstadoVencimiento(fechaVenc) {
+            const hoy = new Date();
+            const fechaVencimiento = new Date(fechaVenc);
+            const diferencia = fechaVencimiento - hoy;
+            const diasRestantes = Math.ceil(diferencia / (1000 * 60 * 60 * 24));
 
-        const estadoVenc = obtenerEstadoVencimiento(producto.fechaVencimiento);
-        const claseFila = producto.cantidad < 5 ? 'stock-bajo' : estadoVenc.clase;
+            if (diasRestantes < 0) return { estado: "VENCIDO", clase: "vencido", badge: "bg-danger" };
+            if (diasRestantes <= 15) return { estado: "POR VENCER", clase: "por-vencer", badge: "bg-warning text-dark" };
+            return { estado: "VIGENTE", clase: "", badge: "bg-success" };
+        }
 
-        tabla.innerHTML += `
-        <tr class="${claseFila}">
-            <td>
-                <span class="badge bg-dark p-2">
-                    ${producto.codigo}
-                </span>
-            </td>
-            <td>
-                <img src="${producto.imagen}" class="img-producto" alt="Producto">
-            </td>
-            <td>
-                <strong>${producto.nombre}</strong>
-            </td>
-            <td>${producto.categoria}</td>
-            <td>${producto.cantidad}</td>
-            <td>${producto.costo} Bs</td>
-            <td>${producto.total} Bs</td>
-            <td>${producto.proveedor}</td>
-            <td>${producto.fechaVencimiento}</td>
-            <td>
-                ${estadoStock}<br>
-                <span class="badge ${estadoVenc.badge} mt-1">${estadoVenc.estado}</span>
-            </td>
-            <td>
-                <button
-                    class="btn btn-danger btn-sm"
-                    onclick="eliminarProducto(${producto.id})"
-                    title="Eliminar producto"
-                >
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </td>
-        </tr>
-        `;
-    });
-}
+        // ============================================================
+        // ========== CRUD DE PRODUCTOS (CON BACKEND PHP) ==========
+        // ============================================================
 
-// ELIMINAR
-function eliminarProducto(id) {
-    Swal.fire({
-        title: '¿Eliminar producto?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#dc3545'
-    }).then((result) => {
-        if(result.isConfirmed){
-            fetch("eliminar_producto.php", {
+        /**
+         * cargarProductos - Obtiene la lista de productos desde el servidor
+         * mediante una petición GET a 'obtener_productos.php'.
+         * Luego actualiza la tabla, el dashboard y las alertas.
+         */
+        function cargarProductos() {
+            // Se añade un parámetro de tiempo para evitar caché
+            fetch("obtener_productos.php?t=" + new Date().getTime())
+                .then(response => response.json())
+                .then(data => {
+                    console.log("DATOS RECIBIDOS:", data);
+                    productos = data; // Guarda en la variable global
+                    renderizarTabla(productos);   // Pinta la tabla
+                    actualizarDashboard();         // Actualiza las tarjetas
+                    mostrarCriticos();             // Muestra alertas
+                })
+                .catch(error => {
+                    console.log("ERROR:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudieron cargar los productos'
+                    });
+                });
+        }
+
+        /**
+         * guardarProducto - Toma los datos del formulario, los valida,
+         * y los envía al servidor mediante POST a 'guardar_producto.php'.
+         * Si todo es correcto, recarga la lista y limpia el formulario.
+         */
+        function guardarProducto() {
+            let codigo = document.getElementById("productoId").value;
+            let nombre = document.getElementById("nombre").value;
+            let categoria = document.getElementById("categoria").value;
+            let cantidad = parseInt(document.getElementById("cantidad").value);
+            let costo = parseFloat(document.getElementById("costo").value);
+            let proveedor = document.getElementById("Provedor").value;
+            let fecha = document.getElementById("fecha").value;
+            let fechaVencimiento = document.getElementById("fechaVencimiento").value;
+
+            // Validación: todos los campos obligatorios (incluyendo vencimiento)
+            if (
+                nombre === "" ||
+                categoria === "" ||
+                isNaN(cantidad) ||
+                isNaN(costo) ||
+                fechaVencimiento === ""
+            ) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos incompletos',
+                    text: 'Complete todos los campos, incluyendo fecha de vencimiento'
+                });
+                return;
+            }
+
+            let total = cantidad * costo;
+            let imagen = imagenesReales[categoria] || imagenesReales["General"];
+
+            // Construye el objeto producto
+            let producto = {
+                codigo: codigo,
+                nombre: nombre,
+                categoria: categoria,
+                cantidad: cantidad,
+                costo: costo,
+                total: total,
+                proveedor: proveedor,
+                fecha: fecha,
+                fechaVencimiento: fechaVencimiento,
+                imagen: imagen
+            };
+
+            // Envía al servidor
+            fetch("guardar_producto.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ id: id })
+                body: JSON.stringify(producto)
             })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success){
+                .then(response => response.json())
+                .then(data => {
+                    console.log("RESPUESTA:", data);
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Producto Guardado',
+                            html: `
+                                <b>${nombre}</b><br>
+                                Categoría: ${categoria}<br>
+                                Cantidad: ${cantidad}<br>
+                                Vence: ${fechaVencimiento}<br>
+                                Total: ${total} Bs
+                            `,
+                            confirmButtonColor: '#6610f2'
+                        });
+                        cargarProductos();  // Recarga la tabla
+                        limpiarCampos();     // Limpia el formulario
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.error
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Eliminado',
-                        text: 'Producto eliminado correctamente'
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo guardar el producto'
                     });
-                    cargarProductos();
+                });
+        }
+
+        /**
+         * eliminarProducto - Envía una solicitud para eliminar un producto
+         * por su ID. Si el usuario confirma, se elimina y se recarga la lista.
+         * @param {number} id - ID del producto en la base de datos.
+         */
+        function eliminarProducto(id) {
+            Swal.fire({
+                title: '¿Eliminar producto?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#dc3545'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("eliminar_producto.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ id: id })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Eliminado',
+                                    text: 'Producto eliminado correctamente'
+                                });
+                                cargarProductos();
+                            }
+                        });
                 }
             });
         }
-    });
-}
 
-// ALERTAS
-function mostrarCriticos() {
-    let lista = document.getElementById("listaCriticos");
-    lista.innerHTML = "";
+        // ============================================================
+        // ========== RENDERIZADO DE TABLA ==========
+        // ============================================================
 
-    let criticos = productos.filter(p => {
-        const venc = obtenerEstadoVencimiento(p.fechaVencimiento);
-        return p.cantidad < 5 || venc.estado === "VENCIDO" || venc.estado === "POR VENCER";
-    });
+        /**
+         * renderizarTabla - Pinta los productos en el <tbody> de la tabla.
+         * Aplica clases de estilo según stock y vencimiento.
+         * @param {Array} lista - Arreglo de productos (por defecto usa 'productos').
+         */
+        function renderizarTabla(lista = productos) {
+            let tabla = document.getElementById("tablaProductos");
+            tabla.innerHTML = "";
 
-    if (criticos.length === 0) {
-        lista.innerHTML = `
-        <div class="alert alert-success">
-            <i class="fa-solid fa-circle-check"></i>
-            No existen productos críticos por stock o vencimiento.
-        </div>
-        `;
-        return;
-    }
+            if (lista.length === 0) {
+                tabla.innerHTML = `
+                    <tr>
+                        <td colspan="11" class="text-center text-muted p-4">
+                            No existen productos registrados
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
 
-    criticos.forEach(p => {
-        const venc = obtenerEstadoVencimiento(p.fechaVencimiento);
-        let mensaje = "";
-        let claseAlerta = "alert-danger";
+            lista.forEach((producto) => {
+                // Estado de stock (menos de 5 unidades = bajo)
+                const estadoStock = producto.cantidad < 5
+                    ? `<span class="badge bg-danger">STOCK BAJO</span>`
+                    : `<span class="badge bg-success">DISPONIBLE</span>`;
 
-        if (p.cantidad < 5) mensaje += `Stock bajo (${p.cantidad}) `;
-        if (venc.estado === "VENCIDO") { mensaje += "Producto VENCIDO "; claseAlerta = "alert-danger"; }
-        if (venc.estado === "POR VENCER") { mensaje += "Próximo a vencer "; claseAlerta = "alert-warning text-dark"; }
+                // Estado de vencimiento
+                const estadoVenc = obtenerEstadoVencimiento(producto.fechaVencimiento);
+                // Clase para la fila (resaltado)
+                const claseFila = producto.cantidad < 5 ? 'stock-bajo' : estadoVenc.clase;
 
-        lista.innerHTML += `
-        <div class="alert ${claseAlerta} mb-2">
-            <b>[${p.codigo}]</b> ${p.nombre} <br>
-            <small>${mensaje} | Vence: ${p.fechaVencimiento}</small>
-        </div>
-        `;
-    });
-}
+                tabla.innerHTML += `
+                    <tr class="${claseFila}">
+                        <td>
+                            <span class="badge bg-dark p-2">
+                                ${producto.codigo}
+                            </span>
+                        </td>
+                        <td>
+                            <img src="${producto.imagen}" class="img-producto" alt="Producto">
+                        </td>
+                        <td>
+                            <strong>${producto.nombre}</strong>
+                        </td>
+                        <td>${producto.categoria}</td>
+                        <td>${producto.cantidad}</td>
+                        <td>${producto.costo} Bs</td>
+                        <td>${producto.total} Bs</td>
+                        <td>${producto.proveedor}</td>
+                        <td>${producto.fechaVencimiento}</td>
+                        <td>
+                            ${estadoStock}<br>
+                            <span class="badge ${estadoVenc.badge} mt-1">${estadoVenc.estado}</span>
+                        </td>
+                        <td>
+                            <button
+                                class="btn btn-danger btn-sm"
+                                onclick="eliminarProducto(${producto.id})"
+                                title="Eliminar producto"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
 
-// DASHBOARD
-function actualizarDashboard() {
-    document.getElementById("totalProductos").innerText = productos.length;
+        // ============================================================
+        // ========== ALERTAS INTELIGENTES ==========
+        // ============================================================
 
-    let total = productos.reduce((acc, p) => acc + parseFloat(p.total), 0);
-    document.getElementById("valorTotal").innerText = total.toFixed(2) + " Bs";
+        /**
+         * mostrarCriticos - Filtra los productos con stock bajo, vencidos
+         * o por vencer, y los muestra en la pestaña de alertas.
+         */
+        function mostrarCriticos() {
+            let lista = document.getElementById("listaCriticos");
+            lista.innerHTML = "";
 
-    let bajos = productos.filter(p => p.cantidad < 5);
-    document.getElementById("stockBajo").innerText = bajos.length;
+            let criticos = productos.filter(p => {
+                const venc = obtenerEstadoVencimiento(p.fechaVencimiento);
+                return p.cantidad < 5 || venc.estado === "VENCIDO" || venc.estado === "POR VENCER";
+            });
 
-    let vencidos = productos.filter(p => obtenerEstadoVencimiento(p.fechaVencimiento).estado === "VENCIDO");
-    document.getElementById("vencidos").innerText = vencidos.length;
+            if (criticos.length === 0) {
+                lista.innerHTML = `
+                    <div class="alert alert-success">
+                        <i class="fa-solid fa-circle-check"></i>
+                        No existen productos críticos por stock o vencimiento.
+                    </div>
+                `;
+                return;
+            }
 
-    let porVencer = productos.filter(p => obtenerEstadoVencimiento(p.fechaVencimiento).estado === "POR VENCER");
-    document.getElementById("porVencer").innerText = porVencer.length;
+            criticos.forEach(p => {
+                const venc = obtenerEstadoVencimiento(p.fechaVencimiento);
+                let mensaje = "";
+                let claseAlerta = "alert-danger";
 
-    let categorias = [...new Set(productos.map(p => p.categoria))];
-    document.getElementById("categorias").innerText = categorias.length;
-}
+                if (p.cantidad < 5) mensaje += `Stock bajo (${p.cantidad}) `;
+                if (venc.estado === "VENCIDO") {
+                    mensaje += "Producto VENCIDO ";
+                    claseAlerta = "alert-danger";
+                }
+                if (venc.estado === "POR VENCER") {
+                    mensaje += "Próximo a vencer ";
+                    claseAlerta = "alert-warning text-dark";
+                }
 
-// BUSCADOR
-function buscarProducto() {
-    let texto = document.getElementById("buscador").value.toLowerCase();
-    let filtrados = productos.filter(p =>
-        p.nombre.toLowerCase().includes(texto) ||
-        p.codigo.toLowerCase().includes(texto) ||
-        p.categoria.toLowerCase().includes(texto)
-    );
-    renderizarTabla(filtrados);
-}
+                lista.innerHTML += `
+                    <div class="alert ${claseAlerta} mb-2">
+                        <b>[${p.codigo}]</b> ${p.nombre} <br>
+                        <small>${mensaje} | Vence: ${p.fechaVencimiento}</small>
+                    </div>
+                `;
+            });
+        }
 
-// LIMPIAR
-function limpiarCampos() {
-    document.getElementById("productoId").value = "";
-    document.getElementById("nombre").value = "";
-    document.getElementById("categoria").value = "";
-    document.getElementById("cantidad").value = "";
-    document.getElementById("costo").value = "";
-    document.getElementById("Provedor").selectedIndex = 0;
-    document.getElementById("fecha").value = "";
-    document.getElementById("fechaVencimiento").value = "";
-    generarIDAutomatico(); // Generar nuevo ID al limpiar
-}
+        // ============================================================
+        // ========== DASHBOARD (INDICADORES) ==========
+        // ============================================================
 
-// DESCARGAR REPORTES
-function descargarReporte(tipo) {
-    if(productos.length === 0){
-        Swal.fire({
-            icon: 'warning',
-            title: 'Sin datos',
-            text: 'No existen productos registrados'
-        });
-        return;
-    }
+        /**
+         * actualizarDashboard - Calcula y actualiza los valores de las
+         * tarjetas del panel principal (total productos, valor, stock bajo,
+         * vencidos, por vencer, categorías).
+         */
+        function actualizarDashboard() {
+            // Total de productos
+            document.getElementById("totalProductos").innerText = productos.length;
 
-    let datosProcesados = [];
-    let nombreArchivo = "";
+            // Suma total de 'total' (cantidad * costo)
+            let total = productos.reduce((acc, p) => acc + parseFloat(p.total), 0);
+            document.getElementById("valorTotal").innerText = total.toFixed(2) + " Bs";
 
-    if(tipo === "Productos"){
-        nombreArchivo = "Inventario_Completo.xlsx";
-        datosProcesados = productos.map(p => ({
-            "Código": p.codigo,
-            "Nombre": p.nombre,
-            "Categoría": p.categoria,
-            "Cantidad": p.cantidad,
-            "Costo": p.costo,
-            "Total": p.total,
-            "Proveedor": p.proveedor,
-            "Fecha Ejecución": p.fecha,
-            "Fecha Vencimiento": p.fechaVencimiento,
-            "Estado Vencimiento": obtenerEstadoVencimiento(p.fechaVencimiento).estado
-        }));
-    }
+            // Productos con cantidad < 5
+            let bajos = productos.filter(p => p.cantidad < 5);
+            document.getElementById("stockBajo").innerText = bajos.length;
 
-    else if(tipo === "Stock Bajo"){
-        nombreArchivo = "Productos_Criticos.xlsx";
-        let filtrados = productos.filter(p => {
-            const venc = obtenerEstadoVencimiento(p.fechaVencimiento);
-            return p.cantidad < 5 || venc.estado === "VENCIDO" || venc.estado === "POR VENCER";
-        });
-        datosProcesados = filtrados.map(p => ({
-            "Código": p.codigo,
-            "Producto": p.nombre,
-            "Cantidad": p.cantidad,
-            "Fecha Vencimiento": p.fechaVencimiento,
-            "Estado": obtenerEstadoVencimiento(p.fechaVencimiento).estado,
-            "Observación": p.cantidad < 5 ? "Stock Bajo" : "Vencimiento próximo/pasado"
-        }));
-    }
+            // Productos vencidos
+            let vencidos = productos.filter(p => obtenerEstadoVencimiento(p.fechaVencimiento).estado === "VENCIDO");
+            document.getElementById("vencidos").innerText = vencidos.length;
 
-    else if(tipo === "Financiero"){
-        nombreArchivo = "Resumen_Financiero.xlsx";
-        let totalCapital = productos.reduce((acc, p) => acc + parseFloat(p.total), 0);
-        let totalVencidos = productos.filter(p => obtenerEstadoVencimiento(p.fechaVencimiento).estado === "VENCIDO").length;
+            // Productos por vencer (próximos 15 días)
+            let porVencer = productos.filter(p => obtenerEstadoVencimiento(p.fechaVencimiento).estado === "POR VENCER");
+            document.getElementById("porVencer").innerText = porVencer.length;
 
-        datosProcesados = [
-            {"Métrica": "Productos Registrados", "Valor": productos.length},
-            {"Métrica": "Capital Total Invertido", "Valor": totalCapital.toFixed(2) + " Bs"},
-            {"Métrica": "Productos Vencidos", "Valor": totalVencidos},
-            {"Métrica": "Valor en riesgo", "Valor": totalVencidos > 0 ? "Revisar inventario" : "Sin riesgo"}
-        ];
-    }
+            // Número de categorías distintas
+            let categorias = [...new Set(productos.map(p => p.categoria))];
+            document.getElementById("categorias").innerText = categorias.length;
+        }
 
-    let hoja = XLSX.utils.json_to_sheet(datosProcesados);
-    let libro = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(libro, hoja, tipo);
-    XLSX.writeFile(libro, nombreArchivo);
+        // ============================================================
+        // ========== BUSCADOR EN TIEMPO REAL ==========
+        // ============================================================
 
-    Swal.fire({
-        icon: 'success',
-        title: 'Reporte Generado',
-        text: 'El archivo Excel fue descargado correctamente'
-    });
-}
+        /**
+         * buscarProducto - Filtra la tabla según el texto ingresado
+         * en el campo de búsqueda (coincidencia en nombre, código o categoría).
+         */
+        function buscarProducto() {
+            let texto = document.getElementById("buscador").value.toLowerCase();
+            let filtrados = productos.filter(p =>
+                p.nombre.toLowerCase().includes(texto) ||
+                p.codigo.toLowerCase().includes(texto) ||
+                p.categoria.toLowerCase().includes(texto)
+            );
+            renderizarTabla(filtrados);
+        }
 
-</script>
+        // ============================================================
+        // ========== LIMPIEZA DE FORMULARIO ==========
+        // ============================================================
+
+        /**
+         * limpiarCampos - Vacía todos los campos del formulario de registro
+         * y genera un nuevo ID automático para el siguiente producto.
+         */
+        function limpiarCampos() {
+            document.getElementById("productoId").value = "";
+            document.getElementById("nombre").value = "";
+            document.getElementById("categoria").value = "";
+            document.getElementById("cantidad").value = "";
+            document.getElementById("costo").value = "";
+            document.getElementById("Provedor").selectedIndex = 0;
+            document.getElementById("fecha").value = "";
+            document.getElementById("fechaVencimiento").value = "";
+            generarIDAutomatico(); // Genera un nuevo ID al limpiar
+        }
+
+        // ============================================================
+        // ========== DESCARGA DE REPORTES (EXCEL) ==========
+        // ============================================================
+
+        /**
+         * descargarReporte - Genera y descarga un archivo Excel con los
+         * datos según el tipo de reporte solicitado.
+         * @param {string} tipo - 'Productos', 'Stock Bajo' o 'Financiero'.
+         */
+        function descargarReporte(tipo) {
+            if (productos.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sin datos',
+                    text: 'No existen productos registrados'
+                });
+                return;
+            }
+
+            let datosProcesados = [];
+            let nombreArchivo = "";
+
+            if (tipo === "Productos") {
+                // Reporte: inventario completo
+                nombreArchivo = "Inventario_Completo.xlsx";
+                datosProcesados = productos.map(p => ({
+                    "Código": p.codigo,
+                    "Nombre": p.nombre,
+                    "Categoría": p.categoria,
+                    "Cantidad": p.cantidad,
+                    "Costo": p.costo,
+                    "Total": p.total,
+                    "Proveedor": p.proveedor,
+                    "Fecha Ejecución": p.fecha,
+                    "Fecha Vencimiento": p.fechaVencimiento,
+                    "Estado Vencimiento": obtenerEstadoVencimiento(p.fechaVencimiento).estado
+                }));
+            } else if (tipo === "Stock Bajo") {
+                // Reporte: productos críticos (stock bajo, vencidos o por vencer)
+                nombreArchivo = "Productos_Criticos.xlsx";
+                let filtrados = productos.filter(p => {
+                    const venc = obtenerEstadoVencimiento(p.fechaVencimiento);
+                    return p.cantidad < 5 || venc.estado === "VENCIDO" || venc.estado === "POR VENCER";
+                });
+                datosProcesados = filtrados.map(p => ({
+                    "Código": p.codigo,
+                    "Producto": p.nombre,
+                    "Cantidad": p.cantidad,
+                    "Fecha Vencimiento": p.fechaVencimiento,
+                    "Estado": obtenerEstadoVencimiento(p.fechaVencimiento).estado,
+                    "Observación": p.cantidad < 5 ? "Stock Bajo" : "Vencimiento próximo/pasado"
+                }));
+            } else if (tipo === "Financiero") {
+                // Reporte: resumen financiero (métricas agregadas)
+                nombreArchivo = "Resumen_Financiero.xlsx";
+                let totalCapital = productos.reduce((acc, p) => acc + parseFloat(p.total), 0);
+                let totalVencidos = productos.filter(p => obtenerEstadoVencimiento(p.fechaVencimiento).estado === "VENCIDO").length;
+
+                datosProcesados = [
+                    { "Métrica": "Productos Registrados", "Valor": productos.length },
+                    { "Métrica": "Capital Total Invertido", "Valor": totalCapital.toFixed(2) + " Bs" },
+                    { "Métrica": "Productos Vencidos", "Valor": totalVencidos },
+                    { "Métrica": "Valor en riesgo", "Valor": totalVencidos > 0 ? "Revisar inventario" : "Sin riesgo" }
+                ];
+            }
+
+            // Convierte a hoja de Excel y descarga
+            let hoja = XLSX.utils.json_to_sheet(datosProcesados);
+            let libro = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(libro, hoja, tipo);
+            XLSX.writeFile(libro, nombreArchivo);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Reporte Generado',
+                text: 'El archivo Excel fue descargado correctamente'
+            });
+        }
+
+    </script>
 </body>
+
 </html>
